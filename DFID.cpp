@@ -1,12 +1,10 @@
 #include <iostream>
 #include <utility>
-#include <queue>
 #include <stack>
 #include <map>
 #include <vector>
 
 #define pii pair<int, int>
-#define mp make_pair
 
 using namespace std;
 
@@ -72,13 +70,10 @@ void generateNewState(pii curState, map<pii, int> *statesCheck, vector<pii> *ope
     }
 }
 
-// Recursive function for DFID search
 bool RecDFIDSearch(pii curState, map<pii, int> *statesCheck,
                    vector<pii> *path, int j1, int j2, int target, int limit) {
 
     vector<pii> tempOpenStates;
-    
-    // Clear the variables if limit hits 0
     if (limit == 0) {
         (*statesCheck).clear();
         (*statesCheck)[{0, 0}] = 1;
@@ -88,11 +83,8 @@ bool RecDFIDSearch(pii curState, map<pii, int> *statesCheck,
 
     if ((curState.first == target) && (curState.second == 0)) {
         return true;
-    } else {
-        (*statesCheck)[curState] = 1;
     }
 
-    // Generate new states and add them to a temporary vector
     generateNewState(curState, statesCheck, &tempOpenStates, j1, j2);
 
     for(auto ele = tempOpenStates.begin(); ele != tempOpenStates.end(); ele++) {
@@ -111,7 +103,6 @@ bool RecDFIDSearch(pii curState, map<pii, int> *statesCheck,
 void DFIDSearch(int j1, int j2, int t1, int limit) {
     map<pii, int> statesCheck;
     stack<pii> openStatesDfs;
-    vector<pii> openStatesBfs;
     vector<pii> path;
     bool isSolvable = false;
 
@@ -120,9 +111,9 @@ void DFIDSearch(int j1, int j2, int t1, int limit) {
     while(!openStatesDfs.empty()) {
         pii curState = openStatesDfs.top();
 
-        statesCheck[curState] == 1;
+        statesCheck[curState] = 1;
 
-        if (!(limit == 0 || (curState.first == t1))) {
+        if (!(curState.first == t1)) {
             if (RecDFIDSearch(curState, &statesCheck, &path, j1, j2, t1, limit)) {
                 path.push_back({0, 0});
                 isSolvable = true;
